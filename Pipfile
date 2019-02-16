@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+ydk = "==0.8.0"
+ydk-models-ietf = "==0.1.5.post2"
+ydk-models-openconfig = "==0.1.6.post1"
+ydk-models-cisco-ios-xr = "==6.5.1.post1"
+jupyter = "*"
+notebook = "*"
+ncclient = "*"
+
+[requires]
+python_version = "3.6"
