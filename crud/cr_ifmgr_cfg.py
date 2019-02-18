@@ -12,7 +12,7 @@ def config_interface_configurations(interface_configurations, if_name, desc, add
     """Add config data to interface_configurations object."""
     # configure IPv4 interface
     interface_configuration = interface_configurations.InterfaceConfiguration()
-    interface_configuration.active = "act"
+    interface_configuration.active = 'act'
     interface_configuration.interface_name = if_name
     interface_configuration.description = desc
 

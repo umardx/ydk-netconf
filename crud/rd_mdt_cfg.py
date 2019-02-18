@@ -11,7 +11,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
     device = urlparse(args.device)
 
-    fil = '''<telemetry-system xmlns="http://openconfig.net/yang/telemetry"/>'''
+    fil = '''
+    <filter>
+    <telemetry-model-driven xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg"/>
+    </filter>
+    '''
 
     with manager.connect(
             host=device.hostname,
@@ -22,7 +26,7 @@ if __name__ == "__main__":
             device_params={'name': 'iosxr'}
     ) as m:
         reply = m.get_config(source='running',
-                             filter=('subtree', fil)).data_xml
+                             filter=fil).data_xml
 
         with open("../running_mdt.xml", 'w') as f:
             f.write(reply)
