@@ -11,7 +11,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     device = urlparse(args.device)
 
-    fil = '''
+    filter_tag = '''
     <filter>
     <telemetry-model-driven xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg"/>
     </filter>
@@ -23,10 +23,10 @@ if __name__ == "__main__":
             username=device.username,
             password=device.password,
             hostkey_verify=False,
-            device_params={'name': 'default'}
+            device_params={'name': 'iosxr'}
     ) as m:
         reply = m.get_config(source='running',
-                             filter=fil).data_xml
+                             filter=filter_tag).data_xml
 
         with open("../running_mdt.xml", 'w') as f:
             f.write(reply)
