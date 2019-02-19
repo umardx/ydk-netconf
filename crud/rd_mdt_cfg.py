@@ -23,7 +23,7 @@ if __name__ == "__main__":
             username=device.username,
             password=device.password,
             hostkey_verify=False,
-            device_params={'name': 'iosxr'}
+            device_params={'name': 'default'}
     ) as m:
         reply = m.get_config(source='running',
                              filter=fil).data_xml
