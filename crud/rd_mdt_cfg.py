@@ -25,8 +25,10 @@ if __name__ == "__main__":
             hostkey_verify=False,
             device_params={'name': 'iosxr'}
     ) as m:
-        reply = m.get_config(source='running',
-                             filter=filter_tag).data_xml
+        reply = m.get_config(
+            source='running',
+            filter=filter_tag
+        ).data_xml
 
         with open("../running_mdt.xml", 'w') as f:
             f.write(reply)

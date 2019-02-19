@@ -1,39 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?><data xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
-  <telemetry-system xmlns="http://openconfig.net/yang/telemetry">
+  <telemetry-model-driven xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg">
    <sensor-groups>
     <sensor-group>
-     <sensor-group-id>ipv4_ospf</sensor-group-id>
-     <config>
-      <sensor-group-id>ipv4_ospf</sensor-group-id>
-     </config>
+     <sensor-group-identifier>ipv4_ospf</sensor-group-identifier>
      <sensor-paths>
       <sensor-path>
-       <path>Cisco-IOS-XR-ipv4-ospf-oper:ospf/processes/process/default-vrf/route-information/connected-routes</path>
-       <config>
-        <path>Cisco-IOS-XR-ipv4-ospf-oper:ospf/processes/process/default-vrf/route-information/connected-routes</path>
-       </config>
+       <telemetry-sensor-path>Cisco-IOS-XR-ipv4-ospf-oper:ospf/processes/process/default-vrf/route-information/connected-routes</telemetry-sensor-path>
       </sensor-path>
      </sensor-paths>
     </sensor-group>
    </sensor-groups>
+   <enable/>
    <subscriptions>
-    <persistent>
-     <subscription>
-      <subscription-id>ipv4</subscription-id>
-      <config>
-       <subscription-id>ipv4</subscription-id>
-      </config>
-      <sensor-profiles>
-       <sensor-profile>
-        <sensor-group>ipv4_ospf</sensor-group>
-        <config>
-         <sensor-group>ipv4_ospf</sensor-group>
-         <sample-interval>30000</sample-interval>
-        </config>
-       </sensor-profile>
-      </sensor-profiles>
-     </subscription>
-    </persistent>
+    <subscription>
+     <subscription-identifier>ipv4</subscription-identifier>
+     <sensor-profiles>
+      <sensor-profile>
+       <sensorgroupid>ipv4_ospf</sensorgroupid>
+       <sample-interval>30000</sample-interval>
+      </sensor-profile>
+     </sensor-profiles>
+    </subscription>
    </subscriptions>
-  </telemetry-system>
+  </telemetry-model-driven>
  </data>

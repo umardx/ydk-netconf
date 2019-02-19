@@ -130,7 +130,7 @@
        <name>cisco-support</name>
       </usergroup-under-username>
      </usergroup-under-usernames>
-     <secret>$1$umMq$LYS6omVUNNA.Kp3lETBS20</secret>
+     <secret>$1$FWnC$dytHkh.iIVU3CO043M6Vb1</secret>
     </username>
    </usernames>
   </aaa>
