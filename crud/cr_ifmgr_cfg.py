@@ -1,11 +1,13 @@
 from argparse import ArgumentParser
 from urllib.parse import urlparse
 
-from ydk.services import CRUDService
-from ydk.providers import NetconfServiceProvider
+from ydk.errors import YModelError, YServiceProviderError
+from ydk.services import CRUDService, CodecService
+from ydk.providers import NetconfServiceProvider, CodecServiceProvider
 from ydk.models.cisco_ios_xr import Cisco_IOS_XR_ifmgr_cfg \
     as xr_ifmgr_cfg
 import logging
+import time
 
 
 def config_interface_configurations(interface_configurations, if_name, desc, addr, mask):
@@ -25,6 +27,7 @@ def config_interface_configurations(interface_configurations, if_name, desc, add
 
 if __name__ == "__main__":
     """Execute main program."""
+    start_time = time.time()
     parser = ArgumentParser()
     parser.add_argument("-v", "--verbose", help="print debugging messages",
                         action="store_true")
@@ -49,8 +52,15 @@ if __name__ == "__main__":
                                       username=device.username,
                                       password=device.password,
                                       protocol=device.scheme)
+    # Instantiate codec providers with json and xml options
+    json_provider = CodecServiceProvider(type='json')
+    xml_provider = CodecServiceProvider(type='xml')
+
     # create CRUD service
     crud = CRUDService()
+
+    # create codec service
+    codec = CodecService()
 
     interface_configurations = xr_ifmgr_cfg.InterfaceConfigurations()  # create object
     # add object configuration
@@ -75,8 +85,15 @@ if __name__ == "__main__":
     # create configuration on NETCONF device
     try:
         crud.create(provider, interface_configurations)
-    except Exception as e:
-        print(str(e))
+    except YServiceProviderError as err:
+        print("NETCONF FAILED with Error:")
+        print(err.message.split('</error-message>')[0].split('"en">')[1])
+    except YModelError as err:
+        print("YDK VALIDATION FAILED with YModelError:")
+        print(err.message)
 
+    end_time = time.time()
+    delta = end_time - start_time
+    print("Time delta: ", str(delta))
     exit()
 # End of script

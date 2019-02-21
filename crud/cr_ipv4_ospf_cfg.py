@@ -1,12 +1,14 @@
 from argparse import ArgumentParser
 from urllib.parse import urlparse
 
-from ydk.services import CRUDService
-from ydk.providers import NetconfServiceProvider
+from ydk.errors import YModelError, YServiceProviderError
+from ydk.services import CRUDService, CodecService
+from ydk.providers import NetconfServiceProvider, CodecServiceProvider
 from ydk.models.cisco_ios_xr import Cisco_IOS_XR_ipv4_ospf_cfg \
     as xr_ipv4_ospf_cfg
 from ydk.types import Empty
 import logging
+import time
 
 
 def config_ospf(ospf):
@@ -46,6 +48,7 @@ def config_ospf(ospf):
 
 if __name__ == "__main__":
     """Execute main program."""
+    start_time = time.time()
     parser = ArgumentParser()
     parser.add_argument("-v", "--verbose", help="print debugging messages",
                         action="store_true")
@@ -64,6 +67,10 @@ if __name__ == "__main__":
         handler.setFormatter(formatter)
         logger.addHandler(handler)
 
+    # Instantiate codec providers with json and xml options
+    json_provider = CodecServiceProvider(type='json')
+    xml_provider = CodecServiceProvider(type='xml')
+
     # create NETCONF provider
     provider = NetconfServiceProvider(address=device.hostname,
                                       port=device.port,
@@ -73,14 +80,24 @@ if __name__ == "__main__":
     # create CRUD service
     crud = CRUDService()
 
+    # create codec service
+    codec = CodecService()
+
     ospf = xr_ipv4_ospf_cfg.Ospf()  # create object
     config_ospf(ospf)  # add object configuration
 
     # create configuration on NETCONF device
     try:
         crud.create(provider, ospf)
-    except Exception as e:
-        print(str(e))
+    except YServiceProviderError as err:
+        print("NETCONF FAILED with Error:")
+        print(err.message.split('</error-message>')[0].split('"en">')[1])
+    except YModelError as err:
+        print("YDK VALIDATION FAILED with YModelError:")
+        print(err.message)
 
+    end_time = time.time()
+    delta = end_time - start_time
+    print("Time delta: ", str(delta))
     exit()
 # End of script
