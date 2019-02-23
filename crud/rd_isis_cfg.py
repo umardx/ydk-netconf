@@ -4,9 +4,9 @@ from urllib.parse import urlparse
 from ydk.errors import YModelError, YServiceProviderError
 from ydk.services import CRUDService, CodecService
 from ydk.providers import NetconfServiceProvider, CodecServiceProvider
-from ydk.models.cisco_ios_xr import Cisco_IOS_XR_ifmgr_cfg \
-    as xr_ifmgr_cfg
-from ydk.models.openconfig import openconfig_interfaces
+from ydk.models.cisco_ios_xr import Cisco_IOS_XR_clns_isis_cfg
+from ydk.types import Empty
+from ydk.filters import YFilter
 import logging
 import time
 
@@ -27,20 +27,17 @@ if __name__ == "__main__":
         logger = logging.getLogger("ydk")
         logger.setLevel(logging.INFO)
         handler = logging.StreamHandler()
-        formatter = logging.Formatter(
-            ("%(asctime)s - %(levelname)s - %(message)s")
-        )
+        formatter = logging.Formatter(("%(asctime)s - %(name)s - "
+                                      "%(levelname)s - %(message)s"))
         handler.setFormatter(formatter)
         logger.addHandler(handler)
 
     # create NETCONF provider
-    provider = NetconfServiceProvider(
-        address=device.hostname,
-        port=device.port,
-        username=device.username,
-        password=device.password,
-        protocol=device.scheme
-    )
+    provider = NetconfServiceProvider(address=device.hostname,
+                                      port=device.port,
+                                      username=device.username,
+                                      password=device.password,
+                                      protocol=device.scheme)
 
     # Instantiate codec providers with json and xml options
     json_provider = CodecServiceProvider(type='json')
@@ -52,18 +49,32 @@ if __name__ == "__main__":
     # create codec service
     codec = CodecService()
 
-    # create object
-    interface_configurations = xr_ifmgr_cfg.InterfaceConfigurations()
-    oc_ifaces = openconfig_interfaces.Interfaces()
+    # First create the top-level Isis() object
+    isis = Cisco_IOS_XR_clns_isis_cfg.Isis()
+
+    # Create the list instance
+    ins = Cisco_IOS_XR_clns_isis_cfg.Isis.Instances.Instance()
+    ins.instance_name = 'default'
+
+    # Set the yfilter attribute of the leaf called 'running' to YFilter.read
+    ins.running = YFilter.read
+
+    # Append the instance to the parent
+    isis.instances.instance.append(ins)
+
+    # Call the CRUD read on the top-level isis object
+    # (assuming you have already instantiated the service and provider)
 
     # create NETCONF operation
     try:
-        _result = crud.read_config(provider, interface_configurations)
+        _result = crud.read(provider, isis)
         if _result is not None:
             result = codec.encode(json_provider, _result)
             print(result)
-            with open("rd_ifmgr_cfg.json", "w") as f:
+            with open("rd_isis_cfg.json", "w") as f:
                 f.write(result)
+        else:
+            print("No result")
     except YServiceProviderError as err:
         print("NETCONF FAILED with Error:")
         print(err.message.split('</error-message>')[0].split('"en">')[1])
@@ -75,5 +86,4 @@ if __name__ == "__main__":
     delta = end_time - start_time
     print("Time delta: ", str(delta))
     exit()
-
 # End of script
