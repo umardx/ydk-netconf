@@ -60,10 +60,12 @@ if __name__ == "__main__":
     try:
         _result = crud.read_config(provider, interface_configurations)
         if _result is not None:
-            result = codec.encode(json_provider, _result)
-            print(result)
+            result_json = codec.encode(json_provider, _result)
             with open("rd_ifmgr_cfg.json", "w") as f:
-                f.write(result)
+                f.write(result_json)
+            result_xml = codec.encode(xml_provider, _result)
+            with open("rd_ifmgr_cfg.xml", "w") as f:
+                f.write(result_xml)
     except YServiceProviderError as err:
         print("NETCONF FAILED with Error:")
         print(err.message.split('</error-message>')[0].split('"en">')[1])
@@ -74,6 +76,8 @@ if __name__ == "__main__":
     end_time = time.time()
     delta = end_time - start_time
     print("Time delta: ", str(delta))
+    print(type(result_json))
+    print(result_json)
     exit()
 
 # End of script

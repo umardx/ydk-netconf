@@ -1,0 +1,53 @@
+<interface-configurations xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg">
+  <interface-configuration>
+    <active>act</active>
+    <interface-name>MgmtEth0/RP0/CPU0/0</interface-name>
+    <ipv4-network xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg">
+      <addresses>
+        <primary>
+          <address>167.205.3.51</address>
+          <netmask>255.255.255.0</netmask>
+        </primary>
+      </addresses>
+    </ipv4-network>
+  </interface-configuration>
+  <interface-configuration>
+    <active>act</active>
+    <interface-name>GigabitEthernet0/0/0/0</interface-name>
+    <description>Interface 0</description>
+    <ipv4-network xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg">
+      <addresses>
+        <primary>
+          <address>172.18.0.1</address>
+          <netmask>255.255.255.252</netmask>
+        </primary>
+      </addresses>
+    </ipv4-network>
+  </interface-configuration>
+  <interface-configuration>
+    <active>act</active>
+    <interface-name>GigabitEthernet0/0/0/1</interface-name>
+    <description>Interface 1</description>
+    <ipv4-network xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg">
+      <addresses>
+        <primary>
+          <address>172.18.1.1</address>
+          <netmask>255.255.255.0</netmask>
+        </primary>
+      </addresses>
+    </ipv4-network>
+  </interface-configuration>
+  <interface-configuration>
+    <active>act</active>
+    <interface-name>GigabitEthernet0/0/0/2</interface-name>
+    <description>Interface 2</description>
+    <ipv4-network xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg">
+      <addresses>
+        <primary>
+          <address>172.18.3.1</address>
+          <netmask>255.255.255.0</netmask>
+        </primary>
+      </addresses>
+    </ipv4-network>
+  </interface-configuration>
+</interface-configurations>
