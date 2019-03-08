@@ -15,7 +15,7 @@ def config_telemetry_model_driven(telemetry_model_driven):
     """Add config data to telemetry_model_driven object."""
     # destination group
     destination_group = telemetry_model_driven.destination_groups.DestinationGroup()
-    destination_group.destination_id = "DGROUP1"
+    destination_group.destination_id = "destGroup1"
     ipv4_destination = destination_group.ipv4_destinations.Ipv4Destination()
     ipv4_destination.destination_port = 5432
     ipv4_destination.ipv4_address = "167.205.3.41"
@@ -31,13 +31,14 @@ def config_telemetry_model_driven(telemetry_model_driven):
 
     # sensor group
     sensor_group = telemetry_model_driven.sensor_groups.SensorGroup()
-    sensor_group.sensor_group_identifier = "SGROUP1"
+    sensor_group.sensor_group_identifier = "sensorGroup1"
     sensor_path = sensor_group.sensor_paths.SensorPath()
-    sensor_path.telemetry_sensor_path = "Cisco-IOS-XR-infra-statsd-oper:infra-statistics/interfaces/interface/latest/generic-counters"
+    sensor_path.telemetry_sensor_path = \
+        "Cisco-IOS-XR-infra-statsd-oper:infra-statistics/interfaces/interface/latest/generic-counters"
     sensor_group.sensor_paths.sensor_path.append(sensor_path)
     telemetry_model_driven.sensor_groups.sensor_group.append(sensor_group)
     sensor_group = telemetry_model_driven.sensor_groups.SensorGroup()
-    sensor_group.sensor_group_identifier = "SGROUP2"
+    sensor_group.sensor_group_identifier = "sensorGroup2"
     sensor_path = sensor_group.sensor_paths.SensorPath()
     sensor_path.telemetry_sensor_path = "Cisco-IOS-XR-nto-misc-oper:memory-summary/nodes/node/summary"
     sensor_group.sensor_paths.sensor_path.append(sensor_path)
@@ -45,17 +46,17 @@ def config_telemetry_model_driven(telemetry_model_driven):
 
     # subscription
     subscription = telemetry_model_driven.subscriptions.Subscription()
-    subscription.subscription_identifier = "SUB1"
+    subscription.subscription_identifier = "subscription1"
     sensor_profile = subscription.sensor_profiles.SensorProfile()
-    sensor_profile.sensorgroupid = "SGROUP1"
+    sensor_profile.sensorgroupid = "sensorGroup1"
     sensor_profile.sample_interval = 5000
     subscription.sensor_profiles.sensor_profile.append(sensor_profile)
     sensor_profile = subscription.sensor_profiles.SensorProfile()
-    sensor_profile.sensorgroupid = "SGROUP2"
+    sensor_profile.sensorgroupid = "sensorGroup2"
     sensor_profile.sample_interval = 8000
     subscription.sensor_profiles.sensor_profile.append(sensor_profile)
     destination_profile = subscription.destination_profiles.DestinationProfile()
-    destination_profile.destination_id = "DGROUP1"
+    destination_profile.destination_id = "destGroup1"
     subscription.destination_profiles.destination_profile.append(destination_profile)
     telemetry_model_driven.subscriptions.subscription.append(subscription)
 
